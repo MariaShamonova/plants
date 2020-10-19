@@ -22,7 +22,7 @@ class CreatePlantsTable extends Migration
             $table->unsignedInteger('color_id')->nullable();
             $table->unsignedInteger('category_id')->nullable();
             $table->string('description');
-            $table->binary('image');
+            $table->longText('image');
             $table->timestamps();
 
        

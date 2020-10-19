@@ -40,8 +40,11 @@ Route::group([
 Route::post('plants', 'PlantsController@store');
 Route::get('plants', 'PlantsController@index');
 Route::get('plants/{plants}', 'PlantsController@show');
-Route::put('plants/{plants}', 'PlantsController@update');
+//Route::put('plants/{plants}', 'PlantsController@update');
 Route::delete('plants/{plants}', 'PlantsController@delete');
+
+Route::get('plants/{plants}', 'PlantsController@searchTitle');
+Route::put('plants/{plants}', 'PlantsController@updatePlants');
 
 Route::post('sizes', 'SizeController@store');
 Route::get('sizes', 'SizeController@index');
