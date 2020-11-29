@@ -1,27 +1,34 @@
 <?php
 
 namespace App\Http\Controllers\api;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Plants;
+use App\Filters\PlantsFilters;
 
 class PlantsController extends Controller
 {
-    public function index()
-    {
-        return Plants::all();
+    public function index(PlantsFilters $filters)
+    {  
+        $plantsArray = Plants::filter($filters)->get();
+        $plantsTotal = Plants::all();
+    
+        $plantsArray[] = count($plantsTotal);
+      
+        return $plantsArray;
     }
 
     public function show(Plants $plants)
     {
-        echo $plants;
         return $plants;
     }
 
     public function store(Request $request)
     {
         $plants = Plants::create($request->all());
-        echo($plants);
+        
+       
         return response()->json([
             'success'=> true,
             'plants' => $plants
@@ -32,7 +39,6 @@ class PlantsController extends Controller
     {
         
         $plants->update($request->all());
-        
         
         return response()->json($plants, 200);
     }
@@ -45,19 +51,20 @@ class PlantsController extends Controller
 
     public function searchTitle($title)
     {   
-    
      
         $plant = Plants::where('title', 'LIKE', "%$title%")->get();
-       
+        $plantsTotal = Plants::all();
+        $plant[] = count($plantsTotal);
+        
         return response()->json($plant, 200);
     }
 
     public function updatePlants(Request $request, Plants $plants)
     {
         
-        echo 'hello';
+ 
         $plants->update($request->all());
-       
+        
         return response()->json($plants, 200);
     }
 

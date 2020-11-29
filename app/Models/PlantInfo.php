@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Orchid\Filters\Filterable;
 use App\Filters\QueryFilter;
 
-class Plants extends Model
+class PlantInfo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id','articul','title', 'price', 'description', 'image'];
+    protected $fillable = ['plant_id', 'size_id', 'color_id', 'category_id' ];
 
     /**
      * Name of columns to which http sorting can be applied
@@ -20,17 +20,18 @@ class Plants extends Model
      * @var array
      */
     protected $allowedSorts = [
-        'title',
-        'price',
+        'plant_id',
+        'size_id',
+        'color_id',
+        'category_id'
         
     ];
 
     protected $allowedFilters = [
-        'title',
-        'articul',
-        'price',
-        'description',
-       
+        'plant_id',
+        'size_id',
+        'color_id',
+        'category_id'
     ];
     
     /**
@@ -42,5 +43,4 @@ class Plants extends Model
        
         $filter->apply($builder);
     }
- 
 }

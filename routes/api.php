@@ -7,6 +7,11 @@ Use App\Models\Plants;
 use App\Http\Controllers\api\PlantsController;
 use App\Http\Controllers\api\SizeController;
 use App\Http\Controllers\api\ColorController;
+use App\Http\Controllers\api\StatusController;
+use App\Http\Controllers\api\DescController;
+use App\Http\Controllers\api\OrdersController;
+use App\Http\Controllers\api\OrdersPlantsController;
+use App\Http\Controllers\api\DataDeliveryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,6 +42,7 @@ Route::group([
 // Route::post('/register', 'Auth\RegisterController@register');
 // Route::post('/login', 'Auth\LoginController@login')->name('login');
 
+//Plants
 Route::post('plants', 'PlantsController@store');
 Route::get('plants', 'PlantsController@index');
 Route::get('plants/{plants}', 'PlantsController@show');
@@ -46,6 +52,29 @@ Route::delete('plants/{plants}', 'PlantsController@delete');
 Route::get('plants/{plants}', 'PlantsController@searchTitle');
 Route::put('plants/{plants}', 'PlantsController@updatePlants');
 
+//Orders
+Route::post('orders', 'OrdersController@store');
+Route::get('orders', 'OrdersController@index');
+Route::get('orders/{orders}', 'OrdersController@show');
+Route::delete('orders/{orders}', 'OrdersController@delete');
+Route::put('orders/{orders}', 'OrdersController@updateOrders');
+
+//OrdersPlants
+Route::post('orders-plants', 'OrdersPlantsController@store');
+Route::get('orders-plants', 'OrdersPlantsController@index');
+Route::get('orders-plants/{orders-plants}', 'OrdersPlantsController@show');
+Route::delete('orders-plants/{orders-plants}', 'OrdersPlantsController@delete');
+Route::put('orders-plants/{orders-plants}', 'OrdersPlantsController@updateOrders');
+
+//OrdersPlants
+Route::post('data-delivery', 'DataDeliveryController@store');
+Route::get('data-delivery', 'DataDeliveryController@index');
+Route::get('data-delivery/{data-delivery}', 'DataDeliveryController@show');
+//Route::delete('data-delivery/{data-delivery}', 'OrdersPlantsController@delete');
+Route::put('data-delivery/{orders-plants}', 'DataDeliveryController@updateOrders');
+
+
+
 Route::post('sizes', 'SizeController@store');
 Route::get('sizes', 'SizeController@index');
 
@@ -54,6 +83,12 @@ Route::get('colors', 'ColorController@index');
 
 Route::post('category', 'CategoryController@store');
 Route::get('category', 'CategoryController@index');
+
+Route::post('status', 'StatusController@store');
+Route::get('status', 'StatusController@index');
+
+Route::post('decsription', 'DescController@store');
+Route::get('decsription', 'DescController@index');
 
 Route::middleware('auth:api')
     ->get('/user', function (Request $request) {
