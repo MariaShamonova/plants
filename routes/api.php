@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 Use App\Models\Plants;
 use App\Http\Controllers\api\PlantsController;
+use App\Http\Controllers\api\PlantInfoController;
 use App\Http\Controllers\api\SizeController;
 use App\Http\Controllers\api\ColorController;
 use App\Http\Controllers\api\StatusController;
@@ -52,6 +53,12 @@ Route::delete('plants/{plants}', 'PlantsController@delete');
 Route::get('plants/{plants}', 'PlantsController@searchTitle');
 Route::put('plants/{plants}', 'PlantsController@updatePlants');
 
+//PlantsInfo
+Route::post('plants-info', 'PlantInfoController@store');
+Route::get('plants-info', 'PlantInfoController@index');
+Route::get('plants-info/{plants-info}', 'PlantInfoController@show');
+Route::put('plants-info/{id}', 'PlantInfoController@update');
+
 //Orders
 Route::post('orders', 'OrdersController@store');
 Route::get('orders', 'OrdersController@index');
@@ -66,7 +73,7 @@ Route::get('orders-plants/{orders-plants}', 'OrdersPlantsController@show');
 Route::delete('orders-plants/{orders-plants}', 'OrdersPlantsController@delete');
 Route::put('orders-plants/{orders-plants}', 'OrdersPlantsController@updateOrders');
 
-//OrdersPlants
+//Data-delifery
 Route::post('data-delivery', 'DataDeliveryController@store');
 Route::get('data-delivery', 'DataDeliveryController@index');
 Route::get('data-delivery/{data-delivery}', 'DataDeliveryController@show');

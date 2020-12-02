@@ -4,38 +4,45 @@ namespace App\Filters;
 
 class PlantsFilters extends QueryFilter
 {
+
     
-    public function category($id)
+    public function plant_id($id)
     {
-        return $this->builder->whereIn('category_id', $id);
+        return $this->builder->where('id', $id);
     }
 
-    public function color($id)
-    {
+    // public function category($id)
+    // {
+    //     return $this->builder->whereIn('category_id', $id);
+    // }
+
+    // public function color($id)
+    // {
         
-        return $this->builder->whereIn('color_id', $id);
-    }
+    //     return $this->builder->whereIn('color_id', $id);
+    // }
 
-    public function size($id)
-    {
+    // public function size($id)
+    // {
         
-        return $this->builder->whereIn('size_id', $id);
-    }
+    //     return $this->builder->whereIn('size_id', $id);
+    // }
 
-    public function min($number)
-    {
+    // public function min($number)
+    // {
 
-        return $this->builder->where('price', '>=', $number);
-    }
+    //     return $this->builder->where('price', '>=', $number);
+    // }
 
-    public function max($number)
-    {
-        return $this->builder->where('price', '<=', $number);
-    }
+    // public function max($number)
+    // {
+    //     return $this->builder->where('price', '<=', $number);
+    // }
 
     public function paggination($pag)
     {
 
+        
         $obj = json_decode($pag);
         $limit = $obj->{'limit'};
         $offset = $obj->{'offset'};

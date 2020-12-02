@@ -14,12 +14,12 @@ class CreatePlantInfosTable extends Migration
     public function up()
     {
         Schema::create('plant_infos', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->unsignedInteger('plant_id')->nullable();
             $table->unsignedInteger('size_id')->nullable();
             $table->unsignedInteger('color_id')->nullable();
             $table->unsignedInteger('category_id')->nullable();
-            $table->unsignedInteger('count')->nullable();
+            $table->unsignedInteger('count')->default(1);
             $table->timestamps();
         });
     }

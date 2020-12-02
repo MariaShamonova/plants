@@ -12,7 +12,7 @@ class PlantInfo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['plant_id', 'size_id', 'color_id', 'category_id' ];
+    protected $fillable = ['plant_id', 'size_id', 'color_id', 'category_id', 'count' ];
 
     /**
      * Name of columns to which http sorting can be applied
@@ -23,7 +23,8 @@ class PlantInfo extends Model
         'plant_id',
         'size_id',
         'color_id',
-        'category_id'
+        'category_id',
+        'count'
         
     ];
 
@@ -31,7 +32,8 @@ class PlantInfo extends Model
         'plant_id',
         'size_id',
         'color_id',
-        'category_id'
+        'category_id',
+        'count'
     ];
     
     /**
@@ -40,7 +42,6 @@ class PlantInfo extends Model
      */
     public function scopeFilter(Builder $builder, QueryFilter $filter)
     {
-       
         $filter->apply($builder);
     }
 }

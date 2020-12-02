@@ -17,6 +17,7 @@ class CreatePlantsTable extends Migration
             $table->increments('id');
             $table->integer('articul')->unique();
             $table->string('title');
+            $table->string('description');
             $table->double('price');
             $table->longText('image');
             $table->timestamps();
