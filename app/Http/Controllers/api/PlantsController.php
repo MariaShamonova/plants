@@ -64,10 +64,12 @@ class PlantsController extends Controller
                 'articul'  => $elements->{'articul'},
                 'image'  => $elements->{'image'},
                 'description'  => $elements->{'description'},
+                'price' => $elements->{'price'},
                 'count' => $sum,
                 'sizes' => $sizesArr,
                 'colors' => $colorsArr,
                 'category' => $categoryEl->{'category_id'},
+                'data'=> $plantsArray
             ];
             $arrayTemp[] = $obj;
             
@@ -146,9 +148,8 @@ class PlantsController extends Controller
     public function updatePlants(Request $request, Plants $plants)
     {
         
- 
         $plants->update($request->all());
-        
+   
         return response()->json($plants, 200);
     }
 

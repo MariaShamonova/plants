@@ -58,6 +58,7 @@ Route::post('plants-info', 'PlantInfoController@store');
 Route::get('plants-info', 'PlantInfoController@index');
 Route::get('plants-info/{plants-info}', 'PlantInfoController@show');
 Route::put('plants-info/{id}', 'PlantInfoController@update');
+Route::put('plants-info-category/{id}', 'PlantInfoController@updateCategory');
 
 //Orders
 Route::post('orders', 'OrdersController@store');

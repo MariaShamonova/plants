@@ -120,6 +120,18 @@ class PlantInfoController extends Controller
         return response()->json($plantInfo, 200);
     }
 
+    public function updateCategory(Request $request, PlantInfo $plantInfo)
+    {
+
+        $id = $request->{'id'};
+        $plantInfo = PlantInfo::where('id', $id)->update(array('category_id' => $request->{'category_id'}));
+        
+        //$input = $request->all();
+       //$plantInfo->fill($input)->save();
+       
+        return response()->json($plantInfo, 200);
+    }
+
     public function delete(PlantInfo $plantInfo)
     {
         
