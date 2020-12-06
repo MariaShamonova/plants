@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Orders;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -63,8 +64,20 @@ class RegisterController extends Controller
             
             $currAd = $request->get('is_admin');
             if ($admin == null || ($currAd !== '1')) {
+
+               
+
                 $user = $this->create($request->all());
                 $token = JWTAuth::attempt($request->only('email', 'password'));
+                $order = Orders::create(
+                    [
+                        'client_id' => $user->id, 
+                        'status_id' => 1, 
+                        'price' => 0, 
+                    ]
+                );
+
+                $order->save();
                 return response()->json([
                     'success' => true,
                     'data' => $user,

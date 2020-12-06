@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Plants;
 use App\Models\PlantInfo;
+use App\Models\OrdersPlants;
 use App\Filters\PlantsFilters;
+
 
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -131,8 +133,16 @@ class PlantsController extends Controller
 
     public function delete(Plants $plants)
     {
-        $plants->delete();
-        return response()->json(null, 204);
+        DB::transaction(function() use ($plants)
+        {
+            $plants->delete();
+            PlantInfo::where('plant_id', '=', $plants->{'id'})->delete();
+            OrdersPlants::where('plant_id', '=', $plants->{'id'})->delete();
+            return response()->json(null, 204);        
+        });
+
+        
+        
     }
 
     public function searchTitle($title)

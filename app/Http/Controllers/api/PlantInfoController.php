@@ -11,6 +11,7 @@ class PlantInfoController extends Controller
 {
     public function index(PlantInfoFilter $filters, Request $request)
     {  
+        
         $plantInfoArray = PlantInfo::filter($filters)->get();
         //$plantInfoTotal = PlantInfo::all();
         //$plantInfoArray[] = count($plantInfoTotal);
@@ -31,12 +32,13 @@ class PlantInfoController extends Controller
         $sizesArr = [];
         if ($count > 0) {
             if ($request->{'size_id'} && $request->{'color_id'} == null) {
-                $colorsTempArr = PlantInfo::select('color_id')->distinct()
+                $colorsTempArr = PlantInfo::filter($filters)->select('color_id')->distinct()
                 ->where([ 
                     ['size_id', '=', $request->{'size_id'}],
                     ['plant_id', '=', $request->{'plant_id'}],
                 ])
                 ->get();
+              
                 $colorsArr = array();   
                 foreach ($colorsTempArr as $color => $colors) {
                     $colorsArr[] = $colors->{'color_id'};
@@ -44,13 +46,15 @@ class PlantInfoController extends Controller
     
                 $sizesArr[] = $request->{'size_id'};
             } else {
+              
                 if ($request->{'size_id'} ==  null && $request->{'color_id'} ) {
-                    $sizesTempArr = PlantInfo::select('size_id')->distinct()
+                    $sizesTempArr = PlantInfo::filter($filters)->select('size_id')->distinct()
                     ->where([
                         ['color_id', '=', $request->{'color_id'}],
                         ['plant_id', '=', $request->{'plant_id'}],
                     ])
                     ->get();
+                    
                     $sizesArr = array();   
                     foreach ($sizesTempArr as $size => $sizes) {
                         $sizesArr[] = $sizes->{'size_id'};
@@ -62,12 +66,12 @@ class PlantInfoController extends Controller
                         $sizesArr[] = $request->{'size_id'};
                         $colorsArr[] = $request->{'color_id'};
                     } else {
-                        $sizesTempArr = PlantInfo::select('size_id')->distinct()->get();
+                        $sizesTempArr = PlantInfo::filter($filters)->select('size_id')->distinct()->get();
                         $sizesArr = array();   
                         foreach ($sizesTempArr as $size => $sizes) {
                             $sizesArr[] = $sizes->{'size_id'};
                         }
-                        $colorsTempArr = PlantInfo::select('color_id')->distinct()->get();
+                        $colorsTempArr = PlantInfo::filter($filters)->select('color_id')->distinct()->get();
                         $colorArr = array();   
                         foreach ($colorsTempArr as $color => $colors) {
                             $colorsArr[] = $colors->{'color_id'};

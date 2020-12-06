@@ -66,13 +66,16 @@ Route::get('orders', 'OrdersController@index');
 Route::get('orders/{orders}', 'OrdersController@show');
 Route::delete('orders/{orders}', 'OrdersController@delete');
 Route::put('orders/{orders}', 'OrdersController@updateOrders');
+Route::get('orders-busket', 'OrdersController@getProductsFromBasket');
 
 //OrdersPlants
 Route::post('orders-plants', 'OrdersPlantsController@store');
 Route::get('orders-plants', 'OrdersPlantsController@index');
 Route::get('orders-plants/{orders-plants}', 'OrdersPlantsController@show');
 Route::delete('orders-plants/{orders-plants}', 'OrdersPlantsController@delete');
-Route::put('orders-plants/{orders-plants}', 'OrdersPlantsController@updateOrders');
+Route::put('orders-plants/{id}', 'OrdersPlantsController@update');
+
+Route::post('add-to-basket', 'OrdersPlantsController@addToBasket');
 
 //Data-delifery
 Route::post('data-delivery', 'DataDeliveryController@store');
