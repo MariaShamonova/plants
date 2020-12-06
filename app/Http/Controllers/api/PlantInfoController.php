@@ -36,6 +36,7 @@ class PlantInfoController extends Controller
                 ->where([ 
                     ['size_id', '=', $request->{'size_id'}],
                     ['plant_id', '=', $request->{'plant_id'}],
+                    ['count', '!=', 0]
                 ])
                 ->get();
               
@@ -52,6 +53,7 @@ class PlantInfoController extends Controller
                     ->where([
                         ['color_id', '=', $request->{'color_id'}],
                         ['plant_id', '=', $request->{'plant_id'}],
+                        ['count', '!=', 0]
                     ])
                     ->get();
                     
@@ -66,12 +68,15 @@ class PlantInfoController extends Controller
                         $sizesArr[] = $request->{'size_id'};
                         $colorsArr[] = $request->{'color_id'};
                     } else {
-                        $sizesTempArr = PlantInfo::filter($filters)->select('size_id')->distinct()->get();
+                        $sizesTempArr = PlantInfo::filter($filters)->select('size_id')
+                        ->distinct()
+                        ->where('count', '!=', 0)->get();
                         $sizesArr = array();   
                         foreach ($sizesTempArr as $size => $sizes) {
                             $sizesArr[] = $sizes->{'size_id'};
                         }
-                        $colorsTempArr = PlantInfo::filter($filters)->select('color_id')->distinct()->get();
+                        $colorsTempArr = PlantInfo::filter($filters)->select('color_id')->distinct()
+                        ->where('count', '!=', 0)->get();
                         $colorArr = array();   
                         foreach ($colorsTempArr as $color => $colors) {
                             $colorsArr[] = $colors->{'color_id'};

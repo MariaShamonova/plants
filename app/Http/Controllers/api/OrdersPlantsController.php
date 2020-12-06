@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\OrdersPlants;
 use App\Filters\OrdersPlantsFilter;
 use App\Models\Orders;
+use App\Models\PlantInfo;
 use Illuminate\Support\Facades\DB;
 class OrdersPlantsController extends Controller
 {
@@ -72,18 +73,20 @@ class OrdersPlantsController extends Controller
     
     public function addToBasket(Request $request, OrdersPlants $orders)
     {
-       
+       //id заказа
         $id = Orders::where([
             ['client_id', '=', $request->{'client_id'}],
             ['status_id', '=', '1']
         ])->first()->{'id'};
-        
-        $plantsCount = OrdersPlants::where([
+      
+        //найти все 
+        $count = OrdersPlants::where([
             ['order_id','=', $id],
             ['plant_id', '=', $request->{'plant_id'} ]
         ])->get();
-        
-        if (count($plantsCount) == 0 ){
+       
+       
+        if (count($count) == 0 ){
             //Создаем новую запись
 
             $orders = OrdersPlants::create([
@@ -91,27 +94,73 @@ class OrdersPlantsController extends Controller
                 'order_id'=> $id
             ] );
         } else {
-            $orders = OrdersPlants::where('plant_id', $request->{'plant_id'})->update(array('count' => DB::raw('count+1')));
+            $numberTemp = OrdersPlants::where('plant_id', $request->{'plant_id'})->first()->{'count'};
+            $number = $numberTemp + 1;
+            $orders = OrdersPlants::where('plant_id', $request->{'plant_id'})->update(array('count' => $number));
         }
-     
-        //$orders = OrdersPlants::create($request->all());
+
+        $plantinf = PlantInfo::where('id', '=', $request->{'plant_id'})->first()->{'count'};
+      
+        if ($plantinf > 0) {
+            $number = $plantinf - 1;
+            $info = PlantInfo::where('id', '=', $request->{'plant_id'})->update(array('count' => $number));
+        } 
+        
         return response()->json([
             'success'=> true,
-            'orders-plants' => $orders
+            'orders-plants' => $orders,
+            
         ], 201);
     }
 
     public function update(Request $request, OrdersPlants $orders)
     { 
-
+        
         $id = $request->{'id'};
         $orders = OrdersPlants::where('id', $id)->update(array('count' => $request->{'count'}));
         return response()->json($orders, 200);
     }
 
-    public function delete(OrdersPlants $orders)
+    public function changeCount(Request $request, OrdersPlants $orders)
+    { 
+
+         $id = $request->{'id'};
+        $orderBefore = OrdersPlants::where('id', $id)->first()->{'count'};
+        $number = $orderBefore + 1 * $request->{'count'}; 
+        $orders = OrdersPlants::where('id', $id)->update(array('count'=> $number));
+    
+        
+        $plantId = OrdersPlants::where('id', $id)->first()->{'plant_id'};
+        $plantCount  = PlantInfo::where('id', $plantId)->get();
+       
+      
+        if (count($plantCount) > 0) {
+            
+            $count = PlantInfo::where('id', $plantId)->first()->{'count'};
+
+            if ($count > 0 || $request->{'count'} < 0) {
+                //echo($request->{'count'} < 0);
+                $numplant = $count + ( - 1 )* $request->{'count'};
+                $plant = PlantInfo::where('id', $plantId)->update(array('count'=> $numplant ));
+            }
+            
+        } 
+        
+        
+        // echo($diff);echo(' ');
+        // echo($plantCount);
+        return response()->json([
+            'orders' => $orders,
+            
+        ], 200);
+    }
+
+    public function delete(Request $request, OrdersPlants $orders)
     {
-        $orders->delete();
+      
+       // $orders->delete();
+        $id = $request->{'id'};
+        OrdersPlants::where('id', $id)->delete();
         return response()->json(null, 204);
     }
 

@@ -78,10 +78,16 @@ class OrdersController extends Controller
                     [ 'orders_plants.plant_id', '=', $plants->{'plant_id'}]
                 ])
                 ->first();
-                    
+                
+                $idField = OrdersPlants::where([
+                    [ 'orders_plants.order_id', '=', $id],
+                    [ 'orders_plants.plant_id', '=', $plants->{'plant_id'}]
+                ])->first()->{'id'};
+                
                 $obj = (object) [
                     'title' => $product->{'title'},
                     'id'  => $product->{'plant_id'},
+                    'orders_plants_id'  => $idField,
                     'articul'  => $product->{'articul'},
                     'image'  => $product->{'image'},
                     'description'  => $product->{'description'},

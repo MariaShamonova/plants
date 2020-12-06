@@ -72,8 +72,9 @@ Route::get('orders-busket', 'OrdersController@getProductsFromBasket');
 Route::post('orders-plants', 'OrdersPlantsController@store');
 Route::get('orders-plants', 'OrdersPlantsController@index');
 Route::get('orders-plants/{orders-plants}', 'OrdersPlantsController@show');
-Route::delete('orders-plants/{orders-plants}', 'OrdersPlantsController@delete');
+Route::delete('orders-plants/{id}', 'OrdersPlantsController@delete');
 Route::put('orders-plants/{id}', 'OrdersPlantsController@update');
+Route::put('change-count/{id}', 'OrdersPlantsController@changeCount');
 
 Route::post('add-to-basket', 'OrdersPlantsController@addToBasket');
 

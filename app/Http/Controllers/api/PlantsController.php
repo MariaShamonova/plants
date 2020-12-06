@@ -35,45 +35,48 @@ class PlantsController extends Controller
                 $sum = $sum  +  $counts->{'count'};
             }
            
-            $tempSizes = PlantInfo::select('size_id')->distinct()
-            ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
-            ->where('plant_infos.plant_id', '=', $elements->{'id'})
-            ->get();
+            if ($sum > 0) {
+                $tempSizes = PlantInfo::select('size_id')->distinct()
+                ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
+                ->where('plant_infos.plant_id', '=', $elements->{'id'})
+                ->get();
 
-            $tempColors = PlantInfo::select('color_id')->distinct()
-            ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
-            ->where('plant_infos.plant_id', '=', $elements->{'id'})
-            ->get();
+                $tempColors = PlantInfo::select('color_id')->distinct()
+                ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
+                ->where('plant_infos.plant_id', '=', $elements->{'id'})
+                ->get();
 
-            $categoryEl = PlantInfo::select('category_id')
-            ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
-            ->where('plant_infos.plant_id', '=', $elements->{'id'})
-            ->first();
+                $categoryEl = PlantInfo::select('category_id')
+                ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
+                ->where('plant_infos.plant_id', '=', $elements->{'id'})
+                ->first();
 
-            $sizesArr = array();   
-            foreach ($tempSizes as $size => $sizes) {
-                $sizesArr[] = $sizes->{'size_id'};
+                $sizesArr = array();   
+                foreach ($tempSizes as $size => $sizes) {
+                    $sizesArr[] = $sizes->{'size_id'};
+                }
+
+                $colorsArr = array();   
+                foreach ($tempColors as $color => $colors) {
+                    $colorsArr[] = $colors->{'color_id'};
+                }
+
+                $obj = (object) [
+                    'title' => $elements->{'title'},
+                    'id'  => $elements->{'id'},
+                    'articul'  => $elements->{'articul'},
+                    'image'  => $elements->{'image'},
+                    'description'  => $elements->{'description'},
+                    'price' => $elements->{'price'},
+                    'count' => $sum,
+                    'sizes' => $sizesArr,
+                    'colors' => $colorsArr,
+                    'category' => $categoryEl->{'category_id'},
+                    'data'=> $plantsArray
+                ];
+                $arrayTemp[] = $obj;
             }
-
-            $colorsArr = array();   
-            foreach ($tempColors as $color => $colors) {
-                $colorsArr[] = $colors->{'color_id'};
-            }
-
-            $obj = (object) [
-                'title' => $elements->{'title'},
-                'id'  => $elements->{'id'},
-                'articul'  => $elements->{'articul'},
-                'image'  => $elements->{'image'},
-                'description'  => $elements->{'description'},
-                'price' => $elements->{'price'},
-                'count' => $sum,
-                'sizes' => $sizesArr,
-                'colors' => $colorsArr,
-                'category' => $categoryEl->{'category_id'},
-                'data'=> $plantsArray
-            ];
-            $arrayTemp[] = $obj;
+            
             
         }
         
