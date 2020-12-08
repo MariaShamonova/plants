@@ -51,7 +51,18 @@ class OrdersController extends Controller
     public function updateOrders(Request $request, Orders $orders)
     { 
  
-        $orders->update($request->all());   
+        //$orders->update($request->all()); 
+        $id = $request->{'id'};
+        $orders = Orders::where('id', $id)->update(array('status_id' => $request->{'status_id'}));  
+        $order = Orders::create(
+            [
+                'client_id' => $request->{'client_id'}, 
+                'delivery_id'=> $request->{'delivery_id'},
+                'status_id' => 1, 
+                'price' => 0, 
+            ]
+        );
+        $order->save();
         return response()->json($orders, 200);
     }
 
@@ -61,10 +72,12 @@ class OrdersController extends Controller
        
            //Сначала нужно получить id заказа для клиента со статусом 1 
             $orderId = Orders::filter($filters)->first();
+       
             $id = $orderId->{'id'};
+           
             $ordersArray = OrdersPlants::select('*')
             ->where('order_id', '=', $id)->get();
-       
+            
             $array = [];
      
             foreach ($ordersArray as $plant => $plants) {

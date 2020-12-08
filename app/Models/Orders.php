@@ -12,7 +12,7 @@ class Orders extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['client_id','status_id', 'price', 'date' ];
+    protected $fillable = ['client_id','delivery_id','status_id', 'price', 'date' ];
 
     /**
      * Name of columns to which http sorting can be applied
@@ -27,6 +27,7 @@ class Orders extends Model
 
     protected $allowedFilters = [
         'client_id',
+        'delivery_id',
         'status_id',
         'price',
         'date'

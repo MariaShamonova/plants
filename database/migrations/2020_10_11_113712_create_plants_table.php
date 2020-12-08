@@ -20,6 +20,7 @@ class CreatePlantsTable extends Migration
             $table->string('description');
             $table->double('price');
             $table->longText('image');
+            $table->string('del')->default('false');
             $table->timestamps();
 
        

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -62,42 +62,47 @@ class RegisterController extends Controller
         if (!$validator->fails()) {
             
            
-            
-            $currAd = $request->get('is_admin');
-            if ($admin == null || ($currAd !== '1')) {
+            DB::transaction(function() use ($request, $admin)
+            {
+                $currAd = $request->get('is_admin');
+                if ($admin == null || ($currAd !== '1')) {
 
-               
+                
 
-                $user = $this->create($request->all());
-                $token = JWTAuth::attempt($request->only('email', 'password'));
-                $order = Orders::create(
-                    [
-                        'client_id' => $user->id, 
-                        'status_id' => 1, 
-                        'price' => 0, 
-                    ]
-                );
-                $userInfo = DataDelivery::create(
-                    [
-                        'client_id' => $user->id,                   
-                    ]
-                );
+                    $user = $this->create($request->all());
+                    $token = JWTAuth::attempt($request->only('email', 'password'));
+                    $userInfo = DataDelivery::create(
+                        [
+                            'client_id' => $user->id,                   
+                        ]
+                    );
+                    echo($userInfo->id);
+                    $order = Orders::create(
+                        [
+                            'client_id' => $user->id, 
+                            'delivery_id'=>$userInfo->id,
+                            'status_id' => 1, 
+                            'price' => 0, 
+                        ]
+                    );
+                    
 
-                $order->save();
-                $userInfo->save();
-                return response()->json([
-                    'success' => true,
-                    'data' => $user,
-                    'token' => $token
-                ], 200);
-            } 
+                    $order->save();
+                    $userInfo->save();
+                    return response()->json([
+                        'success' => true,
+                        'data' => $user,
+                        'token' => $token
+                    ], 200);
+                } 
+            });
             
         }
 
-        return response()->json([
-            'success' => false,
-            'errors' => [$validator->errors(),'Admin already exist!'],
-        ], 422);
+        // return response()->json([
+        //     'success' => false,
+        //     'errors' => [$validator->errors(),'Admin already exist!'],
+        // ], 422);
     }
  
     /**

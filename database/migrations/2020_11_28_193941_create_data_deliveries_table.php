@@ -19,6 +19,7 @@ class CreateDataDeliveriesTable extends Migration
             $table->string('address')->default('');
             $table->string('fullName')->default('');
             $table->string('phone')->default('');
+            $table->string('del')->default('false');
             $table->timestamps();
         });
     }
