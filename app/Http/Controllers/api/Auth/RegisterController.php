@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Orders;
+use App\Models\DataDelivery;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -76,8 +77,14 @@ class RegisterController extends Controller
                         'price' => 0, 
                     ]
                 );
+                $userInfo = DataDelivery::create(
+                    [
+                        'client_id' => $user->id,                   
+                    ]
+                );
 
                 $order->save();
+                $userInfo->save();
                 return response()->json([
                     'success' => true,
                     'data' => $user,

@@ -15,10 +15,10 @@ class CreateDataDeliveriesTable extends Migration
     {
         Schema::create('data_deliveries', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
-            $table->string('address');
-            $table->string('fullName');
-            $table->string('phone');
+            $table->integer('client_id');
+            $table->string('address')->default('');
+            $table->string('fullName')->default('');
+            $table->string('phone')->default('');
             $table->timestamps();
         });
     }

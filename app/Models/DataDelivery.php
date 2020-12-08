@@ -11,11 +11,14 @@ use App\Filters\QueryFilter;
 class DataDelivery extends Model
 {
     use HasFactory;
-    protected $fillable = [ 'id', 'order_id'];
+    protected $fillable = [ 'id', 'client_id', 'address', 'fullName', 'phone'];
 
     protected $allowedFilters = [
         'id',
-        'order_id',
+        'client_id',
+        'address',
+        'fullName',
+        'phone'
     ];
 
     

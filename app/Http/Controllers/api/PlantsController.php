@@ -15,7 +15,7 @@ use stdClass;
 
 class PlantsController extends Controller
 {
-    public function index(PlantsFilters $filters)
+    public function index(PlantsFilters $filters, Request $request)
     {  
         $plantsArray = Plants::filter($filters)->get();
       
@@ -23,6 +23,7 @@ class PlantsController extends Controller
         $arrayTemp = array();   
         $object = new stdClass();  
         $object->count= count($plantsTotal);
+        $hide = $request->{'all_plants'};
         foreach ($plantsArray  as $element => $elements) {
             $tempdata = PlantInfo::select('count')
             ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
@@ -34,8 +35,11 @@ class PlantsController extends Controller
             foreach ($tempdata as $oount=> $counts) {
                 $sum = $sum  +  $counts->{'count'};
             }
-           
-            if ($sum > 0) {
+            
+            $boolSum = $sum > 0 ? true: false;
+            $boolReq = $hide === 'true'? true: false;
+    
+            if ($boolSum || $boolReq) {
                 $tempSizes = PlantInfo::select('size_id')->distinct()
                 ->join('plants', 'plant_infos.plant_id', '=', 'plants.id')
                 ->where('plant_infos.plant_id', '=', $elements->{'id'})
@@ -88,6 +92,7 @@ class PlantsController extends Controller
       
         return $arrayTemp;
     }
+    
 
     public function show(Plants $plants)
     {

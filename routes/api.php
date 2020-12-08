@@ -83,7 +83,7 @@ Route::post('data-delivery', 'DataDeliveryController@store');
 Route::get('data-delivery', 'DataDeliveryController@index');
 Route::get('data-delivery/{data-delivery}', 'DataDeliveryController@show');
 //Route::delete('data-delivery/{data-delivery}', 'OrdersPlantsController@delete');
-Route::put('data-delivery/{orders-plants}', 'DataDeliveryController@updateOrders');
+Route::put('data-delivery/{id}', 'DataDeliveryController@update');
 
 
 

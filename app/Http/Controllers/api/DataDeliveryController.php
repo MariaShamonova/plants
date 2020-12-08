@@ -12,8 +12,6 @@ class DataDeliveryController extends Controller
     public function index(DataDeliveryFilter $filters)
     {  
         $dataDeliveryArray = DataDelivery::filter($filters)->get();
-        $dataDeliveryTotal = DataDelivery::all();
-        $dataDeliveryArray[] = count($dataDeliveryTotal);
       
         return $dataDeliveryArray;
     }
@@ -34,8 +32,14 @@ class DataDeliveryController extends Controller
 
     public function update(Request $request, DataDelivery $dataDelivery)
     {
+        //echo($request->{'fullName'});
+        //$dataDelivery->update($request->all());
+        //$dataDelivery->save();
         
-        $dataDelivery->update($request->all());
+        $id = $request->{'id'};
+        $info = DataDelivery::where('id', $id)->update(array('fullName' => $request->{'fullName'}));
+        $infoPhone = DataDelivery::where('id', $id)->update(array('phone' => $request->{'phone'}));
+        $infoPhone = DataDelivery::where('id', $id)->update(array('address' => $request->{'address'}));
         
         return response()->json($dataDelivery, 200);
     }

@@ -124,7 +124,7 @@ class OrdersPlantsController extends Controller
     public function changeCount(Request $request, OrdersPlants $orders)
     { 
 
-         $id = $request->{'id'};
+        $id = $request->{'id'};
         $orderBefore = OrdersPlants::where('id', $id)->first()->{'count'};
         $number = $orderBefore + 1 * $request->{'count'}; 
         $orders = OrdersPlants::where('id', $id)->update(array('count'=> $number));
@@ -138,11 +138,10 @@ class OrdersPlantsController extends Controller
             
             $count = PlantInfo::where('id', $plantId)->first()->{'count'};
 
-            if ($count > 0 || $request->{'count'} < 0) {
-                //echo($request->{'count'} < 0);
+            //if ($count > 0 || $request->{'count'} < 0) {
                 $numplant = $count + ( - 1 )* $request->{'count'};
                 $plant = PlantInfo::where('id', $plantId)->update(array('count'=> $numplant ));
-            }
+            //}
             
         } 
         
