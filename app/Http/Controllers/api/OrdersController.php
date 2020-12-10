@@ -8,6 +8,7 @@ use App\Models\Orders;
 use App\Filters\OrdersFilter;
 use App\Models\OrdersPlants;
 use App\Filters\OrdersPlantsFilter;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 class OrdersController extends Controller
 {
@@ -18,6 +19,42 @@ class OrdersController extends Controller
         //$ordersArray[] = count($ordersTotal);
       
         return $ordersArray;
+    }
+
+    public function getActiveOrders(OrdersFilter $filters)
+    {  
+        $ordersArray = Orders::filter($filters)->get();
+        $productAll = [];
+        $arrayTemp = [];
+        $productSum = 0;
+        foreach ($ordersArray as $order => $orders) {
+            $productAll = OrdersPlants::select('*')
+            ->join('plant_infos', 'plant_infos.id', '=', 'orders_plants.plant_id')
+            ->join('plants', 'plants.id', '=', 'plant_infos.plant_id')
+            ->where('order_id',  '=', $orders->{'id'})
+            ->get();
+            
+            $address = Orders::select('*')
+            ->join('data_deliveries', 'data_deliveries.id', '=', 'orders.delivery_id' )
+            ->where('orders.id', '=',$orders->{'id'} )
+            ->first();
+            //echo($address);
+            $obj = (object) [
+                'plants' =>  $productAll,
+                'order_id' => $orders->{'id'},
+                'date' => $orders->{'date'},
+                'sum' => $orders->{'price'},
+                'status_id' => $orders->{'status_id'},
+                'address' => $address->{'address'},
+                'person'=>$address->{'fullName'},
+                'phone' => $address->{'phone'}
+
+            ];
+            $arrayTemp[] = $obj;
+            
+        }
+        
+        return $arrayTemp;
     }
 
     public function show(Orders $orders)
@@ -54,16 +91,28 @@ class OrdersController extends Controller
         //$orders->update($request->all()); 
         $id = $request->{'id'};
         $orders = Orders::where('id', $id)->update(array('status_id' => $request->{'status_id'}));  
-        $order = Orders::create(
-            [
-                'client_id' => $request->{'client_id'}, 
-                'delivery_id'=> $request->{'delivery_id'},
-                'status_id' => 1, 
-                'price' => 0, 
-            ]
-        );
-        $order->save();
-        return response()->json($orders, 200);
+        
+        if ($request->{'date'}){
+            $date = Orders::where('id', $id)->update(array('date' => $request->{'date'}));  
+        }
+        if ($request->{'status_id'} == 2) {
+            $order = Orders::create(
+                [
+                    'client_id' => $request->{'client_id'}, 
+                    'delivery_id'=> $request->{'delivery_id'},
+                    'status_id' => 1, 
+                    'price' => 0, 
+                    'date'=> ''
+                ]
+            );
+            $orders = Orders::where('id', $id)->update(array('price' => $request->{'price'}));  
+      
+            $order->save();
+        }
+        
+        return response()->json([
+            'orders' => $orders
+        ],  200);
     }
 
     //Custom GET
@@ -72,7 +121,7 @@ class OrdersController extends Controller
        
            //Сначала нужно получить id заказа для клиента со статусом 1 
             $orderId = Orders::filter($filters)->first();
-       
+
             $id = $orderId->{'id'};
            
             $ordersArray = OrdersPlants::select('*')

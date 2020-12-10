@@ -13,7 +13,17 @@ class OrdersFilter extends QueryFilter
     {
         return $this->builder->where('client_id', $id);
     }
-    
+
+    public function statuses_id($id)
+    {
+        
+        return $this->builder->whereIn('status_id', $id);
+    }
+
+    public function date($order = 'desc')
+    {
+        return $this->builder->orderBy('date', $order);
+    }
 
     public function paggination($pag)
     {

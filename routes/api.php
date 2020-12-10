@@ -67,7 +67,7 @@ Route::get('orders/{orders}', 'OrdersController@show');
 Route::delete('orders/{orders}', 'OrdersController@delete');
 Route::put('orders/{id}', 'OrdersController@updateOrders');
 Route::get('orders-busket', 'OrdersController@getProductsFromBasket');
-
+Route::get('active-orders', 'OrdersController@getActiveOrders');
 //OrdersPlants
 Route::post('orders-plants', 'OrdersPlantsController@store');
 Route::get('orders-plants', 'OrdersPlantsController@index');

@@ -83,6 +83,7 @@ class RegisterController extends Controller
                             'delivery_id'=>$userInfo->id,
                             'status_id' => 1, 
                             'price' => 0, 
+                            'date'=> ''
                         ]
                     );
                     

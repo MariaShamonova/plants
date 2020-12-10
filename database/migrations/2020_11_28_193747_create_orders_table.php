@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->integer('delivery_id');
             $table->integer('status_id')->default(1);
             $table->double('price');
+            $table->string('date')->default('');
             $table->string('del')->default('false');
             $table->timestamps();
         });
