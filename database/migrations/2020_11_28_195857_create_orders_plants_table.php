@@ -17,7 +17,7 @@ class CreateOrdersPlantsTable extends Migration
             $table->increments('id');
             $table->integer('plant_id');
             $table->integer('order_id');
-            $table->double('count')->default(1);
+            $table->double('countInBasket')->default(1);
             $table->timestamps();
         });
     }

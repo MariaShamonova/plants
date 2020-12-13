@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\DeleteRecordsAddress',
+        'App\Console\Commands\DeleteRecordsOrders',
+        'App\Console\Commands\DeleteRecordsPlants',
+        
     ];
 
     /**
@@ -24,7 +27,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('DeleteRecordsAddress')->weekly();
+        $schedule->command('DeleteRecordsOrders')->weekly();
+        $schedule->command('DeleteRecordsPlants')->weekly();
     }
 
     /**

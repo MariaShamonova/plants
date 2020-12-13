@@ -38,7 +38,7 @@ class OrdersController extends Controller
             ->join('data_deliveries', 'data_deliveries.id', '=', 'orders.delivery_id' )
             ->where('orders.id', '=',$orders->{'id'} )
             ->first();
-            //echo($address);
+            //echo($productAll);
             $obj = (object) [
                 'plants' =>  $productAll,
                 'order_id' => $orders->{'id'},
@@ -154,7 +154,7 @@ class OrdersController extends Controller
                     'image'  => $product->{'image'},
                     'description'  => $product->{'description'},
                     'price' =>$product->{'price'},
-                    'count' => $plants->{'count'},
+                    'count' => $plants->{'countInBasket'},
                     'size' => $product->{'size_id'},
                     'color' => $product->{'color_id'},
                     'category' => $product->{'category_id'},

@@ -41,7 +41,7 @@ class OrdersPlantsController extends Controller
                 'image'  => $product->{'image'},
                 'description'  => $product->{'description'},
                 'price' =>$product->{'price'},
-                'count' => $plants->{'count'},
+                'count' => $plants->{'countInBasket'},
                 'size' => $product->{'size_id'},
                 'color' => $product->{'color_id'},
                 'category' => $product->{'category_id'},
@@ -94,13 +94,13 @@ class OrdersPlantsController extends Controller
                 'order_id'=> $id
             ] );
         } else {
-            $numberTemp = OrdersPlants::where('plant_id', $request->{'plant_id'})->first()->{'count'};
+            $numberTemp = OrdersPlants::where('plant_id', $request->{'plant_id'})->first()->{'countInBasket'};
             $number = $numberTemp + 1;
-            $orders = OrdersPlants::where('plant_id', $request->{'plant_id'})->update(array('count' => $number));
+            $orders = OrdersPlants::where('plant_id', $request->{'plant_id'})->update(array('countInBasket' => $number));
         }
 
         $plantinf = PlantInfo::where('id', '=', $request->{'plant_id'})->first()->{'count'};
-      
+        
         if ($plantinf > 0) {
             $number = $plantinf - 1;
             $info = PlantInfo::where('id', '=', $request->{'plant_id'})->update(array('count' => $number));
@@ -117,7 +117,7 @@ class OrdersPlantsController extends Controller
     { 
         
         $id = $request->{'id'};
-        $orders = OrdersPlants::where('id', $id)->update(array('count' => $request->{'count'}));
+        $orders = OrdersPlants::where('id', $id)->update(array('countInBasket' => $request->{'count'}));
         return response()->json($orders, 200);
     }
 
@@ -125,9 +125,9 @@ class OrdersPlantsController extends Controller
     { 
 
         $id = $request->{'id'};
-        $orderBefore = OrdersPlants::where('id', $id)->first()->{'count'};
+        $orderBefore = OrdersPlants::where('id', $id)->first()->{'countInBasket'};
         $number = $orderBefore + 1 * $request->{'count'}; 
-        $orders = OrdersPlants::where('id', $id)->update(array('count'=> $number));
+        $orders = OrdersPlants::where('id', $id)->update(array('countInBasket'=> $number));
     
         
         $plantId = OrdersPlants::where('id', $id)->first()->{'plant_id'};
@@ -136,11 +136,11 @@ class OrdersPlantsController extends Controller
       
         if (count($plantCount) > 0) {
             
-            $count = PlantInfo::where('id', $plantId)->first()->{'count'};
+            $count = PlantInfo::where('id', $plantId)->first()->{'countInBasket'};
 
             //if ($count > 0 || $request->{'count'} < 0) {
                 $numplant = $count + ( - 1 )* $request->{'count'};
-                $plant = PlantInfo::where('id', $plantId)->update(array('count'=> $numplant ));
+                $plant = PlantInfo::where('id', $plantId)->update(array('countInBasket'=> $numplant ));
             //}
             
         } 
